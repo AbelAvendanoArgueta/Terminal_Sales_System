@@ -1,9 +1,9 @@
 import os
 from unidecode import unidecode
 """
-Unidecode es una libreria que estoy usando en caso
+Unidecode es una librería que estoy usando en caso
 el usuario inserte un dato con acento y para reducir
-la posibilidad de errores en el codigo
+la posibilidad de errores en el código
 """
 ## Funciones principales del software
 
@@ -18,7 +18,7 @@ que el código sea más eficiente.
 # Inicializar el diccionario de productos vacío
 productos = {}
 
-# Funcion para imprimir encabezados centrados
+# Función para imprimir encabezados centrados
 def print_header(text):
 
     # La función get_terminal_size() devuelve un objeto 
@@ -37,7 +37,6 @@ def agregar_producto():
     cantidad = int(input("\nIngrese la cantidad disponible del producto\nEj: 1, 2, 3, 4, 5, 6... : "))
     productos[clear_nombre] = {"precio": precio_str, "cantidad": cantidad}
 
-
 # Función para realizar una compra
 def hacer_compra():
     nombre = input("\nIngrese el nombre del producto que desea comprar: ")
@@ -53,7 +52,6 @@ def hacer_compra():
     else:
         print("Lo siento, el producto no está disponible o no hay suficiente cantidad en existencia.")
 
-
 # Función para listar los productos
 def listar_productos():
     print("\nProductos disponibles en la tienda:\n")
@@ -61,6 +59,13 @@ def listar_productos():
         print(f"- {producto}: precio Q {info['precio']}, cantidad en existencia: {info['cantidad']}")
 
     input("\nPresione 'Enter' para continuar")
+
+# Función para listar los productos
+def exportar_productos(productos):
+    with open("productos.txt", "w") as f:
+        for producto in productos:
+            f.write(f"{producto['nombre']},{producto['precio']},{producto['stock']}\n")
+    print("\nLos productos se han exportado correctamente.\n")
 
 ## Ejecución del programa
 # Loop principal del programa
@@ -80,15 +85,20 @@ while True:
     print("4. Salir")
 
 
-    opcion = int(input("Ingrese una opción: "))
+    opción = int(input("Ingrese una opción: "))
 
-    if opcion == 1:
+    # Llamado de las funciones
+    if opción == 1:
+        exportar_productos()
+    #elif opción == 2:
+    #    importar_productos()
+    elif opción == 3:
         agregar_producto()
-    elif opcion == 2:
+    elif opción == 4:
         hacer_compra()
-    elif opcion == 3:
+    elif opción == 5:
         listar_productos()
-    elif opcion == 4:
+    elif opción == 6:
         # Romper el loop principal del programa y cerrarlo
         break
     else:
