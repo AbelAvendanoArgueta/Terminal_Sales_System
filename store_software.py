@@ -46,11 +46,11 @@ def hacer_compra():
     # Verificar si el producto está disponible
     if clear_nombre in productos and productos[clear_nombre]["cantidad"] >= cantidad:
         precio_total = float(productos[clear_nombre]["precio"]) * cantidad
-        print("El precio total de su compra es: ${:.2f}".format(float(precio_total)))
+        print("\nEl precio total de su compra es: ${:.2f}\n".format(float(precio_total)))
 
         productos[clear_nombre]["cantidad"] -= cantidad
     else:
-        print("Lo siento, el producto no está disponible o no hay suficiente cantidad en existencia.")
+        print("\nLo siento, el producto no está disponible o no hay suficiente cantidad en existencia.\n")
 
 # Función para listar los productos
 def listar_productos():
@@ -58,7 +58,7 @@ def listar_productos():
     for producto, info in productos.items():
         print(f"- {producto}: precio Q {info['precio']}, cantidad en existencia: {info['cantidad']}")
 
-    input("\nPresione 'Enter' para continuar")
+    input("\nPresione 'Enter' para continuar\n")
 
 # Función para exportar los productos aun archivo *.txt
 def exportar_productos(productos):
@@ -71,12 +71,12 @@ def exportar_productos(productos):
 # y asignarlos a la variable global 'productos'  
 def importar_productos():
     global productos
-    productos = []
+    productos = {}
     try:
         with open("productos.txt", "r") as f:
             for line in f:
-                nombre, precio, stock = line.strip().split(",")
-                productos.append({"nombre": nombre, "precio": float(precio), "stock": int(stock)})
+                nombre, precio, cantidad = line.strip().split(",")
+                productos[nombre] = {"precio": float(precio), "cantidad": int(cantidad)}
         print("\nLos productos se han importado correctamente.\n")
     except FileNotFoundError:
         print("\nEl archivo de productos no existe.\n")
