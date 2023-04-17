@@ -36,6 +36,18 @@ def agregar_producto():
     precio_str = "{:.2f}".format(precio) # Convertir el precio a string con dos decimales
     cantidad = int(input("\nIngrese la cantidad disponible del producto\nEj: 1, 2, 3, 4, 5, 6... : "))
     productos[clear_nombre] = {"precio": precio_str, "cantidad": cantidad}
+    exportar_productos(productos)
+
+# Función para actualizar un nuevo producto
+def actualizar_producto():
+    global productos
+    nombre = input("\nIngrese el nombre del producto que desea actualizar\nEj: Leche, Huevos, Queso... : ")
+    clear_nombre = unidecode(nombre.lower())
+    precio = float(input("\nIngrese  nuevo precio del producto\nEj: 10.00, 5.75, 3.50... : "))
+    precio_str = "{:.2f}".format(precio) # Convertir el precio a string con dos decimales
+    cantidad = int(input("\nIngrese la nueva cantidad disponible del producto\nEj: 1, 2, 3, 4, 5, 6... : "))
+    productos[clear_nombre] = {"precio": precio_str, "cantidad": cantidad}
+    exportar_productos(productos)
 
 # Función para realizar una compra
 def hacer_compra():
@@ -49,6 +61,10 @@ def hacer_compra():
         print("\nEl precio total de su compra es: ${:.2f}\n".format(float(precio_total)))
 
         productos[clear_nombre]["cantidad"] -= cantidad
+        # Aquí se llama a la función exportar productos
+        # para actualizar automáticamente el archivo de
+        # "productos.txt" automáticamente
+        exportar_productos(productos)
     else:
         print("\nLo siento, el producto no está disponible o no hay suficiente cantidad en existencia.\n")
 
@@ -71,7 +87,6 @@ def exportar_productos(productos):
 # y asignarlos a la variable global 'productos'  
 def importar_productos():
     global productos
-    productos = {}
     try:
         with open("productos.txt", "r") as f:
             for line in f:
@@ -94,13 +109,20 @@ while True:
 
     # Saludo
     print("\n\n         Bienvenido a este programa! \n\n")
-    print("1. Exportar lista de productos")
-    print("2. Importar lista de productos")
-    print("3. Agregar un producto")
-    print("4. Hacer una compra")
-    print("5. Listar productos")
-    print("6. Salir")
 
+    # Advertencias
+    print("Se le recomienda que su primera acción usando este software")
+    print("sea el de Importar/Actualizar la lista de productos para")
+    print("evitar perdida de datos \n\n")
+
+    # Menu Principal
+    print("1. Exportar lista de productos")
+    print("2. Importar/Actualizar lista de productos")
+    print("3. Agregar un producto")
+    print("4. Actualizar un producto")
+    print("5. Hacer una compra")
+    print("6. Listar productos")
+    print("7. Salir")
 
     opción = int(input("Ingrese una opción: "))
 
@@ -112,10 +134,16 @@ while True:
     elif opción == 3:
         agregar_producto()
     elif opción == 4:
-        hacer_compra()
+        actualizar_producto()
     elif opción == 5:
-        listar_productos()
+        hacer_compra()
     elif opción == 6:
+        listar_productos()
+    elif opción == 7:
+        # Aquí se llama a la función exportar productos
+        # para actualizar automáticamente el archivo de
+        # "productos.txt" automáticamente
+        exportar_productos(productos)
         # Romper el loop principal del programa y cerrarlo
         break
     else:
