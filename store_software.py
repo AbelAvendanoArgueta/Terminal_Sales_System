@@ -60,12 +60,27 @@ def listar_productos():
 
     input("\nPresione 'Enter' para continuar")
 
-# Función para listar los productos
+# Función para exportar los productos aun archivo *.txt
 def exportar_productos(productos):
     with open("productos.txt", "w") as f:
-        for producto in productos:
-            f.write(f"{producto['nombre']},{producto['precio']},{producto['stock']}\n")
+        for producto, info in productos.items():
+            f.write(f"{producto},{info['precio']},{info['cantidad']}\n")
     print("\nLos productos se han exportado correctamente.\n")
+
+# Función para importar la información del archivo *.txt
+# y asignarlos a la variable global 'productos'  
+def importar_productos():
+    global productos
+    productos = []
+    try:
+        with open("productos.txt", "r") as f:
+            for line in f:
+                nombre, precio, stock = line.strip().split(",")
+                productos.append({"nombre": nombre, "precio": float(precio), "stock": int(stock)})
+        print("\nLos productos se han importado correctamente.\n")
+    except FileNotFoundError:
+        print("\nEl archivo de productos no existe.\n")
+    return productos
 
 ## Ejecución del programa
 # Loop principal del programa
@@ -79,19 +94,21 @@ while True:
 
     # Saludo
     print("\n\n         Bienvenido a este programa! \n\n")
-    print("1. Agregar un producto")
-    print("2. Hacer una compra")
-    print("3. Listar productos")
-    print("4. Salir")
+    print("1. Exportar lista de productos")
+    print("2. Importar lista de productos")
+    print("3. Agregar un producto")
+    print("4. Hacer una compra")
+    print("5. Listar productos")
+    print("6. Salir")
 
 
     opción = int(input("Ingrese una opción: "))
 
     # Llamado de las funciones
     if opción == 1:
-        exportar_productos()
-    #elif opción == 2:
-    #    importar_productos()
+        exportar_productos(productos)
+    elif opción == 2:
+        importar_productos()
     elif opción == 3:
         agregar_producto()
     elif opción == 4:
